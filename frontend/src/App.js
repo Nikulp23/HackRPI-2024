@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import './App.css';
 
-import FileUpload from './components/buttons/FileUpload'
+import FileUploadToggle from './components/buttons/FileUploadToggle'
 
 function App() {
   // State variables to store the response messages
@@ -38,16 +38,17 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    testGetApi();
-    testPostApi();
-  }, []);
 
   const fileInputRef = useRef(null);
+  const [imageUrl, setImageUrl] = useState(null); // State to store the uploaded image URL
 
   const handleUploadBoxClick = () => {
     fileInputRef.current.click();
   };
+
+  const handleDiscardImage = () => {
+    setImageUrl(null);
+  }
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -99,6 +100,7 @@ function App() {
           // COORDINATES CURRENTLY HARD CODED - Later to be returned from prev API call
           const coordinates = {0: {'x': 344, 'y': 263, 'width': 167, 'height': 155}, 1: {'x': 91, 'y': 307, 'width': 108, 'height': 93}, 2: {'x': 81, 'y': 225, 'width': 146, 'height': 54}, 3: {'x': 353, 'y': 48, 'width': 192, 'height': 217}, 4: {'x': 197, 'y': 96, 'width': 154, 'height': 155}, 5: {'x': 69, 'y': 104, 'width': 86, 'height': 115}, 6: {'x': 127, 'y': 16, 'width': 85, 'height': 111}}
           await getCroppedData(blob, coordinates);
+          setImageUrl(url);
         } else {
           console.error('Failed to fetch image:', response.statusText);
         }
@@ -121,7 +123,7 @@ function App() {
 
       <div className="content">
         <div className="uploadButtons">
-            <FileUpload />
+            <FileUploadToggle />
         </div>
 
         <div className="card">
@@ -130,19 +132,43 @@ function App() {
             <p className="cardSubHeader">Let's see what eco-treasures you've found!</p>
             <div className="uploadBoxContainer">
               <div className="uploadBox" onClick={handleUploadBoxClick}>
-                <h4 className="clickToUpload">Click to upload</h4>
+                {!imageUrl && <h4 className="clickToUpload">Click to upload</h4> }
                 <input
                   type="file"
                   ref={fileInputRef}
                   style={{ display: 'none' }}
                   onChange={handleFileChange}
                 />
+                {imageUrl &&
+                  <>
+                    <div className="imageDisplayContainer">
+                      <img src={imageUrl} className="imageDisplay" alt="Uploaded" style={{ maxWidth: '95%', maxHeight: '75%' }} />
+                      <div className="reuploadContainer">
+                        <h4 className="clickToUpload">Click to re-upload</h4>
+                      </div>
+                    </div>
+                  </>
+                }
               </div>
+              {imageUrl &&
+              <>
+              <div className="reuploadContainer">
+                <h4 className="clickToUpload">OR</h4>
+              </div>
+              <button className="discardImage" onClick={handleDiscardImage}>
+                <h4 className="clickToUpload">Discard image</h4>
+              </button>
+              </>
+              }
             </div>
           </div>
         </div>
+
         <div className="card">
-          
+          <div className="cardContent">
+            <h2 className="cardHeader">Eco-Discoveries</h2>
+            <p className="cardSubHeader">Let's see what we can save from the landfill!</p>
+          </div>
         </div>
       </div>
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import styles from './../../styles/buttons/FileUpload.module.css'
+import styles from './../../styles/buttons/FileUploadToggle.module.css'
 
-function FileUpload({ }) {
+function FileUploadToggle({ }) {
 
    const [activeButton, setActiveButton] = useState('imageUpload');
 
@@ -15,13 +15,13 @@ function FileUpload({ }) {
             <div className={`${styles.buttonWrapper} ${styles.buttonWrapperLeft}`}>
                <button className={styles.button} onClick={() => handleToggle('imageUpload')}
                   style={{
-                     backgroundColor: activeButton === 'imageUpload' ? 'white' : 'gainsboro'
+                     backgroundColor: activeButton === 'imageUpload' ? 'white' : '#E8E8E8'
                   }}>Image Upload</button>
             </div>
             <div className={`${styles.buttonWrapper} ${styles.buttonWrapperRight}`}>
                <button className={styles.button} onClick={() => handleToggle('videoUpload')}
                   style={{
-                     backgroundColor: activeButton === 'videoUpload' ? 'white' : 'gainsboro'
+                     backgroundColor: activeButton === 'videoUpload' ? 'white' : '#E8E8E8'
                   }}>Video Upload</button>
             </div>
          </div>
@@ -29,4 +29,4 @@ function FileUpload({ }) {
    )
 }
 
-export default FileUpload;
+export default FileUploadToggle;
