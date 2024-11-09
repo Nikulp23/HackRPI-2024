@@ -38,11 +38,6 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    testGetApi();
-    testPostApi();
-  }, []);
-
   const fileInputRef = useRef(null);
 
   const handleUploadBoxClick = () => {

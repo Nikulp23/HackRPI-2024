@@ -156,8 +156,8 @@ def upload_image():
 
    # # TEMPORARY - Return same image back
    # return bounding_boxes, send_file(file_path, mimetype='image/jpeg')
-   return send_file(file_path, mimetype='image/jpeg')
-
+   # return send_file(file_path, mimetype='image/jpeg')
+   return jsonify({"message": "File uploaded successfully", "file_path": file_path}), 200
 
 def allowed_file(filename):
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
