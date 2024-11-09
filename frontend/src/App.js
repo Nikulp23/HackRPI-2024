@@ -62,7 +62,7 @@ function App() {
       formData.append('image', file);
 
       try {
-        const response = await fetch('http://localhost:5000/upload-image', {
+        const response = await fetch('http://localhost:5000/api/upload-image', {
           method: 'POST',
           body: formData,
         });
