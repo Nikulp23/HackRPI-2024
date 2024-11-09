@@ -38,10 +38,6 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    testGetApi();
-    testPostApi();
-  }, []);
 
   const fileInputRef = useRef(null);
   const [imageUrl, setImageUrl] = useState(null); // State to store the uploaded image URL
