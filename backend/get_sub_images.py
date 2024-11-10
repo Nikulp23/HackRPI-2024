@@ -60,7 +60,7 @@ def getSubImages():
          cropped_images_urls.append(future.result())
 
    # TEMPORARY LIMIT OF PROCESSING ONLY 2 ITEMS TO SAVE GPT $
-   with ThreadPoolExecutor(max_workers=2) as executor:
+   with ThreadPoolExecutor as executor:
       api_futures = [
          executor.submit(call_chat_output, image_url)
          for image_url in cropped_images_urls
