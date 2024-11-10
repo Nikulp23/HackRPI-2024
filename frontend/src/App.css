@@ -37,6 +37,14 @@
 }
 
 .cardSubHeader {
+  margin-bottom: 1.5em;
+}
+
+.cardText {
+  margin-bottom: 0.75em;
+}
+
+.cardSubHeader, .cardText {
   color: gray;
 }
 

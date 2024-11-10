@@ -2,11 +2,13 @@ import React, { useEffect, useState, useRef } from 'react';
 import './App.css';
 
 import FileUploadToggle from './components/buttons/FileUploadToggle'
+import IdentifiedItem from './components/content/IdentifiedItem'
 
 function App() {
   // State variables to store the response messages
   const [getMessage, setGetMessage] = useState('');
   const [postMessage, setPostMessage] = useState('');
+  const [data, setData] = useState([]);
 
   // Function to test GET request
   const testGetApi = async () => {
@@ -37,6 +39,20 @@ function App() {
       console.error("Error with POST request:", error);
     }
   };
+
+  useEffect(() => {
+    const data = [{facts : "Plastic bottles are made from polyethylene terephthalate (PET) or high-density polyethylene (HDPE), both of which are highly recyclable. Recycling plastic can help reduce pollution and conserve natural resources, as producing new plastic products from recycled materials uses less energy and water compared to making them from raw materials.",
+                   infoOnUse : "Plastic bottles can be recycled at most recycling centers. To properly recycle, rinse and dry the bottle to remove any liquid or residue. Check for a recycling symbol and number on the bottle to ensure it is accepted by your local recycling program.",
+                   name : "Plastic Bottle",
+                   use : "Recycle"},
+                  
+                  {facts : "Trash bags are made from polyethylene terephthalate (PET) or high-density polyethylene (HDPE), both of which are highly recyclable. Recycling plastic can help reduce pollution and conserve natural resources, as producing new plastic products from recycled materials uses less energy and water compared to making them from raw materials.",
+                  infoOnUse : "Trash bags can be recycled at most recycling centers. To properly recycle, rinse and dry the bottle to remove any liquid or residue. Check for a recycling symbol and number on the bottle to ensure it is accepted by your local recycling program.",
+                  name : "Trash Bag",
+                  use : "Garbage"}];
+
+    setData(data);
+  }, []);
 
 
   const fileInputRef = useRef(null);
@@ -71,7 +87,8 @@ function App() {
       });
 
       if (response.ok) {
-        const data = await response.json();
+        // const data = await response.json();
+        // setData(data);
         console.log('Cropped images data:', data);
       } else {
         console.error('Failed to fetch cropped images:', response.statusText);
@@ -128,8 +145,9 @@ function App() {
 
         <div className="card">
           <div className="cardContent">
+
             <h2 className="cardHeader">Upload an Image</h2>
-            <p className="cardSubHeader">Let's see what eco-treasures you've found!</p>
+            <p className="cardText">Let's see what eco-treasures you've found!</p>
             <div className="uploadBoxContainer">
               <div className="uploadBox" onClick={handleUploadBoxClick}>
                 {!imageUrl && <h4 className="clickToUpload">Click to upload</h4> }
@@ -164,12 +182,29 @@ function App() {
           </div>
         </div>
 
-        <div className="card">
+        <div className="card" style={{maxHeight: "60vh", overflowY: "auto", overflowX: "hidden"}}>
           <div className="cardContent">
             <h2 className="cardHeader">Eco-Discoveries</h2>
             <p className="cardSubHeader">Let's see what we can save from the landfill!</p>
+
+            {data[0] && <IdentifiedItem facts={data[0].facts}
+                            infoOnUse={data[0].infoOnUse}
+                            name={data[0].name}
+                            use={data[0].use}
+                            />}
+
+            {data[1] && <IdentifiedItem facts={data[1].facts}
+                            infoOnUse={data[1].infoOnUse}
+                            name={data[1].name}
+                            use={data[1].use}
+                            />}
+
           </div>
         </div>
+
+        <h2>Hi</h2>
+
+
       </div>
 
     </div>

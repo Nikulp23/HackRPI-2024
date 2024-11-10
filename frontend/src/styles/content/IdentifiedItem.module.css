@@ -1,0 +1,30 @@
+.subCard {
+   background-color: white;
+   border-radius: 5px;
+   width: 94%;
+   height: 100%;
+   box-shadow: 0 0 3px lightgray;
+   margin-top: 1em;
+}
+
+.infoContainer {
+   /* background-color: rgb(222, 241, 193, 0.4); */
+   border-radius: 5px;
+   width: 94%;
+   height: 100%;
+   margin-top: 1em;
+}
+
+.info {
+   padding: 10px;
+}
+
+.howToDispose {
+   padding: 10px;
+   background-color: rgb(222, 241, 193, 0.4);
+}
+
+.funFacts {
+   padding: 10px;
+   background-color: rgba(193, 231, 241, 0.4);
+}
