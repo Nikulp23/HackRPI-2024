@@ -67,8 +67,7 @@ def getSubImages():
       ]
 
       results = [future.result() for future in as_completed(api_futures)]
-
-   print(results)
+      
    return jsonify({"message": "success", "results": results}), 200
 
 

@@ -21,7 +21,7 @@ def get_image_description(image_url):
    Specify if you are not able to view the image if it is unclear or due to security or can't access. 
    You are able to access certains links but not others explain that. 
 
-   This is the format the response as a JSON:
+   This is the format the response as a JSON. DO NOT PUT ```json ``` ANYWHERE IN IT:
 
     {
       "Item Name": "Put Name Here",
