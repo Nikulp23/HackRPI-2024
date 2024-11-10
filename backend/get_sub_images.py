@@ -60,7 +60,7 @@ def getSubImages():
          cropped_images_urls.append(future.result())
 
    # TEMPORARY LIMIT OF PROCESSING ONLY 2 ITEMS TO SAVE GPT $
-   with ThreadPoolExecutor(max_workers=2) as executor:
+   with ThreadPoolExecutor as executor:
       api_futures = [
          executor.submit(call_chat_output, image_url)
          for image_url in cropped_images_urls
@@ -104,7 +104,7 @@ def process_and_upload(original_image_bytes, coord, key):
 def call_chat_output(image_url):
     """Calls the chatOutput API with the image URL."""
     try:
-        response = requests.post('http://localhost:5000/chatOutput', json={"image_url": image_url})
+        response = requests.post('http://localhost:5000/api/chatOutput', json={"image_url": image_url})
         if response.status_code == 200:
             return response.json()
         else:
