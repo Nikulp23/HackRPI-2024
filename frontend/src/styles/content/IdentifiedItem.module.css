@@ -19,14 +19,16 @@
 }
 
 .itemHeaderWrapper {
+   padding-left: 30px;
+   align-self: flex-start;
    display: flex;
    align-items: center;
+   margin-top: 1em;
 }
 
 .itemHeader {
    display: flex;
    flex-direction: column;
-   justify-content: center;
 }
 
 .croppedImg {
