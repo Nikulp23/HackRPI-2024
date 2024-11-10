@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from upload_routes import upload_routes
+from chatOutput import chatOutput
 
 app = Flask(__name__)
 CORS(app)
@@ -20,8 +21,12 @@ def post_data():
     response = {"message": "Data received", "received_data": data}
     return jsonify(response), 200
 
+
+
 # Register the Blueprint
 app.register_blueprint(upload_routes, url_prefix='/api')
+
+app.register_blueprint(chatOutput, url_prefix='/api')
 
 if __name__ == '__main__':
     app.run(debug=True)
