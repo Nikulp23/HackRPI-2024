@@ -15,13 +15,35 @@
 .itemTitle img {
    height: 1em;
    width: auto;
-   margin-right: 8px;
+   margin-left: 8px;
+}
+
+.itemHeaderWrapper {
+   display: flex;
+   align-items: center;
+}
+
+.itemHeader {
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+}
+
+.croppedImg {
+   /* height: 4em; */
+   height: 90px;
+   width: 90px;
+   /* width: auto; */
+   margin-right: 24px;
+   border-radius: 50%;
+   /* border-radius: 5px; */
+   border: 2px solid gray;
 }
 
 .infoContainer {
    /* background-color: rgb(222, 241, 193, 0.4); */
    border-radius: 5px;
-   width: 94%;
+   width: 91%;
    height: 100%;
    margin-top: 1em;
 }

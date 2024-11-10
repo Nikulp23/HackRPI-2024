@@ -41,29 +41,29 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    const data = [{facts : "Plastic bottles are made from polyethylene terephthalate (PET) or high-density polyethylene (HDPE), both of which are highly recyclable. Recycling plastic can help reduce pollution and conserve natural resources, as producing new plastic products from recycled materials uses less energy and water compared to making them from raw materials.",
-                   infoOnUse : "Plastic bottles can be recycled at most recycling centers. To properly recycle, rinse and dry the bottle to remove any liquid or residue. Check for a recycling symbol and number on the bottle to ensure it is accepted by your local recycling program.",
-                   name : "Plastic Bottle",
-                   use : "Recycle"},
+  // useEffect(() => {
+  //   const data = [{facts : "Plastic bottles are made from polyethylene terephthalate (PET) or high-density polyethylene (HDPE), both of which are highly recyclable. Recycling plastic can help reduce pollution and conserve natural resources, as producing new plastic products from recycled materials uses less energy and water compared to making them from raw materials.",
+  //                  infoOnUse : "Plastic bottles can be recycled at most recycling centers. To properly recycle, rinse and dry the bottle to remove any liquid or residue. Check for a recycling symbol and number on the bottle to ensure it is accepted by your local recycling program.",
+  //                  name : "Plastic Bottle",
+  //                  use : "Recycle"},
                   
-                  {facts : "Trash bags are made from polyethylene terephthalate (PET) or high-density polyethylene (HDPE), both of which are highly recyclable. Recycling plastic can help reduce pollution and conserve natural resources, as producing new plastic products from recycled materials uses less energy and water compared to making them from raw materials.",
-                  infoOnUse : "Trash bags can be recycled at most recycling centers. To properly recycle, rinse and dry the bottle to remove any liquid or residue. Check for a recycling symbol and number on the bottle to ensure it is accepted by your local recycling program.",
-                  name : "Trash Bag",
-                  use : "Reuse"},
+  //                 {facts : "Trash bags are made from polyethylene terephthalate (PET) or high-density polyethylene (HDPE), both of which are highly recyclable. Recycling plastic can help reduce pollution and conserve natural resources, as producing new plastic products from recycled materials uses less energy and water compared to making them from raw materials.",
+  //                 infoOnUse : "Trash bags can be recycled at most recycling centers. To properly recycle, rinse and dry the bottle to remove any liquid or residue. Check for a recycling symbol and number on the bottle to ensure it is accepted by your local recycling program.",
+  //                 name : "Trash Bag",
+  //                 use : "Reuse"},
                 
-                  {facts : "Trash bags are made from polyethylene terephthalate (PET) or high-density polyethylene (HDPE), both of which are highly recyclable. Recycling plastic can help reduce pollution and conserve natural resources, as producing new plastic products from recycled materials uses less energy and water compared to making them from raw materials.",
-                    infoOnUse : "Trash bags can be recycled at most recycling centers. To properly recycle, rinse and dry the bottle to remove any liquid or residue. Check for a recycling symbol and number on the bottle to ensure it is accepted by your local recycling program.",
-                    name : "Trash Bag",
-                    use : "Salvage"},
+  //                 {facts : "Trash bags are made from polyethylene terephthalate (PET) or high-density polyethylene (HDPE), both of which are highly recyclable. Recycling plastic can help reduce pollution and conserve natural resources, as producing new plastic products from recycled materials uses less energy and water compared to making them from raw materials.",
+  //                   infoOnUse : "Trash bags can be recycled at most recycling centers. To properly recycle, rinse and dry the bottle to remove any liquid or residue. Check for a recycling symbol and number on the bottle to ensure it is accepted by your local recycling program.",
+  //                   name : "Trash Bag",
+  //                   use : "Salvage"},
                   
-                  {facts : "Trash bags are made from polyethylene terephthalate (PET) or high-density polyethylene (HDPE), both of which are highly recyclable. Recycling plastic can help reduce pollution and conserve natural resources, as producing new plastic products from recycled materials uses less energy and water compared to making them from raw materials.",
-                    infoOnUse : "Trash bags can be recycled at most recycling centers. To properly recycle, rinse and dry the bottle to remove any liquid or residue. Check for a recycling symbol and number on the bottle to ensure it is accepted by your local recycling program.",
-                    name : "Trash Bag",
-                    use : "Useless"}];
+  //                 {facts : "Trash bags are made from polyethylene terephthalate (PET) or high-density polyethylene (HDPE), both of which are highly recyclable. Recycling plastic can help reduce pollution and conserve natural resources, as producing new plastic products from recycled materials uses less energy and water compared to making them from raw materials.",
+  //                   infoOnUse : "Trash bags can be recycled at most recycling centers. To properly recycle, rinse and dry the bottle to remove any liquid or residue. Check for a recycling symbol and number on the bottle to ensure it is accepted by your local recycling program.",
+  //                   name : "Trash Bag",
+  //                   use : "Useless"}];
 
-    setData(data);
-  }, []);
+  //   setData(data);
+  // }, []);
 
   const getCroppedData = async (blob, coordinates) => {
     const formData = new FormData();
@@ -78,9 +78,18 @@ function App() {
       });
 
       if (response.ok) {
-        // const data = await response.json();
-        // setData(data);
         const data = await response.json();
+        const result = data.results;
+
+        const parsedData = result.map(item => {
+          const values = Object.values(item);
+        
+          return {facts : values[0], useInfo : values[1], name : values[2], use : values[3], url : values[4]};
+        });
+
+        setData(parsedData);
+        console.log(parsedData);
+
         console.log('Cropped images data:', data);
       } else {
         console.error('Failed to fetch cropped images:', response.statusText);
@@ -278,29 +287,28 @@ function App() {
             </div>
             <p className="cardSubHeader">Let's see what we can save from the landfill!</p>
 
-            {data[0] && <IdentifiedItem facts={data[0].facts}
-                            infoOnUse={data[0].infoOnUse}
+
+            {data.map((item, index) => (
+              <IdentifiedItem
+                key={index}
+                facts={item.facts}
+                useInfo={item.useInfo}
+                name={item.name}
+                use={item.use}
+                url={item.url}
+              />
+            ))}
+            {/* {data[0] && <IdentifiedItem facts={data[0].facts}
+                            useInfo={data[0].useInfo}
                             name={data[0].name}
                             use={data[0].use}
                             />}
 
             {data[1] && <IdentifiedItem facts={data[1].facts}
-                            infoOnUse={data[1].infoOnUse}
+                            useInfo={data[1].useInfo}
                             name={data[1].name}
                             use={data[1].use}
-                            />}
-
-            {data[2] && <IdentifiedItem facts={data[2].facts}
-                            infoOnUse={data[2].infoOnUse}
-                            name={data[2].name}
-                            use={data[2].use}
-                            />}
-
-            {data[3] && <IdentifiedItem facts={data[3].facts}
-                            infoOnUse={data[3].infoOnUse}
-                            name={data[3].name}
-                            use={data[3].use}
-                            />}
+                            />} */}
 
           </div>
         </div>

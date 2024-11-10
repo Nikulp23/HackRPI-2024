@@ -43,7 +43,7 @@ def upload_image():
       'https://api.remove.bg/v1.0/removebg',
       files={'image_file': BytesIO(img_encoded.tobytes())},
       data={'size': 'auto'},
-      headers={'X-Api-Key': 'h2DRfrubcCZ8c8UmMyTMPfpV'},  # Replace with your API key
+      headers={'X-Api-Key': 'JG362kPo68XHMrKmA4xHX9L5'},  # Replace with your API key
    )
 
    if response.status_code == requests.codes.ok:

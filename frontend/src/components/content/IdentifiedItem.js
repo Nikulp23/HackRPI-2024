@@ -5,22 +5,28 @@ import reuseImg from './../../images/reuse.png';
 import salvageImg from './../../images/firstaid.png'
 import uselessImg from './../../images/trash.png'
 
-function IdenfitiedItem({ facts, infoOnUse, name, use }) {
+function IdenfitiedItem({ facts, useInfo, name, use, url }) {
 
    return (
       <>
          <div className={styles.subCard}>
             <div className="cardContent">
-               <div className={styles.itemTitle}>
-                  <img src={use === "Recycle" ? recycleImg : use === "Reuse" ? reuseImg : use === "Salvage" ? salvageImg : uselessImg} alt="recycle" />
-                  <h3 className="cardHeader">{name}</h3>
+
+               <div className={styles.itemHeaderWrapper}>
+               <img src={url} className={styles.croppedImg} alt="cropped image" />
+                  <div className={styles.itemHeader}>
+                     <div className={styles.itemTitle}>
+                        <h3 className="cardHeader">{name}</h3>
+                        <img src={use === "Recycle" ? recycleImg : use === "Reuse" ? reuseImg : use === "Salvage" ? salvageImg : uselessImg} alt="recycle" />
+                     </div>
+                     <p className="cardText">{use === "Recycle" ? "These should be recycled!" : use === "Reuse" ? "You can reuse these!" : use === "Salvage" ? "You don't need to throw these away!" : "Don't recycle these."}</p>
+                  </div>
                </div>
-               <p className="cardSubHeader">{use === "Recycle" ? "These should be recycled!" : use === "Reuse" ? "You can reuse these!" : use === "Salvage" ? "You don't need to throw these away!" : "Don't recycle these."}</p>
 
                <div className={`${styles.howToDispose} ${styles.infoContainer}`}>
                   <div className={styles.info}>
                      <h4 className="cardHeader">How to Dispose:</h4>
-                     <p className="cardText">{infoOnUse}</p>
+                     <p className="cardText">{useInfo}</p>
                   </div>
                </div>
 
