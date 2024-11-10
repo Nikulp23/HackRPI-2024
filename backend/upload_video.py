@@ -1,6 +1,10 @@
+import base64
+from io import BytesIO
 from flask import Blueprint, request, jsonify, send_file
 import os
 import cv2
+import numpy as np
+import requests
 from werkzeug.utils import secure_filename
 from moviepy.editor import ImageSequenceClip
 from PIL import Image
@@ -63,9 +67,11 @@ def process_video(video_path):
             break
 
         if frame_count % frames_to_skip == 0:
+            processed_frame = process_frame_with_boxes(frame)
+
             # Save the frame as an image
             frame_filename = os.path.join(frame_folder, f'frame_{frame_count}.png')
-            cv2.imwrite(frame_filename, frame)
+            cv2.imwrite(frame_filename, processed_frame)
             frame_list.append(frame_filename)
         
         frame_count += 1
@@ -78,12 +84,12 @@ def process_video(video_path):
     # extend frames for 2 seconds each
     modified_frames = []
     for frame_path in frame_list:
-        img = Image.open(frame_path).convert("L")  # Testing by switching them to grey
+        img = Image.open(frame_path)  # Testing by switching them to grey
         modified_frame_path = frame_path.replace('frame_', 'modified_')
         img.save(modified_frame_path)
         
         # Repeat frame to last for 2 seconds
-        modified_frames.extend([modified_frame_path] * (fps * 2))  # 2 seconds at original fps
+        modified_frames.extend([modified_frame_path] * (fps * 1))  # 2 seconds at original fps
 
     if not modified_frames:
         raise ValueError("No modified frames available for video creation.")
@@ -101,3 +107,26 @@ def process_video(video_path):
 
     return output_video_path
 
+def process_frame_with_boxes(frame):
+    """Uses the external function logic to add green boxes to the frame."""
+    # Encode frame as PNG
+    _, img_encoded = cv2.imencode('.png', frame)
+
+    # Use a filename with a valid extension
+    files = {
+        'image': ('frame.png', BytesIO(img_encoded.tobytes()), 'image/png')
+    }
+
+    response = requests.post(
+        'http://localhost:5000/api/upload-image',  # Change to your actual endpoint
+        files=files
+    )
+
+    if response.status_code == 200:
+        data = response.json()
+        img_data = base64.b64decode(data['image'])
+        nparr = np.frombuffer(img_data, np.uint8)
+        processed_frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+        return processed_frame
+    else:
+        raise ValueError(f"Failed to process frame: {response.text}")

@@ -136,10 +136,9 @@ function App() {
       setVideoUrl(videoUrl);
   
       if (response.ok) {
-        const data = await response.json();
-        // const videoUrl = URL.createObjectURL(file);
-        // setVideoUrl(videoUrl);
-        console.log(data)
+        const blob = await response.blob();
+        const videoUrl = URL.createObjectURL(blob);
+        setVideoUrl(videoUrl);
       } else {
         console.error('Failed to fetch image:', response.statusText);
       }
