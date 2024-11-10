@@ -7,7 +7,7 @@ from io import BytesIO
 import os
 import uuid
 import json
-import requests 
+from chatOutput import chat_output_route
 
 from dotenv import load_dotenv  
 
@@ -62,7 +62,7 @@ def getSubImages():
    # TEMPORARY LIMIT OF PROCESSING ONLY 2 ITEMS TO SAVE GPT $
    with ThreadPoolExecutor as executor:
       api_futures = [
-         executor.submit(call_chat_output, image_url)
+         executor.submit(chat_output_route, image_url)
          for image_url in cropped_images_urls
       ]
 
@@ -101,13 +101,14 @@ def process_and_upload(original_image_bytes, coord, key):
    return upload_to_firebase(in_memory_cropped_image, firebase_filename)
 
 
-def call_chat_output(image_url):
-    """Calls the chatOutput API with the image URL."""
-    try:
-        response = requests.post('http://localhost:5000/api/chatOutput', json={"image_url": image_url})
-        if response.status_code == 200:
-            return response.json()
-        else:
-            return {"error": f"Failed to get description for {image_url}"}
-    except Exception as e:
-        return {"error": f"Exception for {image_url}: {str(e)}"}
+# def call_chat_output(image_url):
+#    return chat_output_route(image_url)
+   #  """Calls the chatOutput API with the image URL."""
+   #  try:
+   #      response = requests.post('http://localhost:5000/api/chatOutput', json={"image_url": image_url})
+   #      if response.status_code == 200:
+   #          return response.json()
+   #      else:
+   #          return {"error": f"Failed to get description for {image_url}"}
+   #  except Exception as e:
+   #      return {"error": f"Exception for {image_url}: {str(e)}"}

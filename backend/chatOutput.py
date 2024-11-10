@@ -61,11 +61,9 @@ def get_image_description(image_url):
 
    return data
 
-@chatOutput.route('/chatOutput', methods=['POST'])
-def chat_output_route():
-    image_url = request.json.get("image_url")
-    json_response = get_image_description(image_url)
-    return jsonify(json_response)
+def chat_output_route(url):
+   json_response = get_image_description(url)
+   return json_response
 
 
     
