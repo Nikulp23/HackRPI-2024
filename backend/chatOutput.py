@@ -25,7 +25,7 @@ def get_image_description(image_url):
 
     {
       "Item Name": "Put Name Here",
-      "Use": "Recycle, reuse, salvage",
+      "Use": "Recycle, reuse, salvage, useless",
       "Information on Use": "Details here",
       "Educational Facts": "Facts here"
     }
