@@ -1,5 +1,4 @@
-# HackRPI-2024
-# Timothy, Robert, Nikul, Matteo
+# EcoVision HackRPI-2024
 
 EcoVision is a sustainability-focused tool designed to help individuals and waste management facilities make eco-friendly choices by identifying recyclable, reusable, or salvageable items. By leveraging computer vision and machine learning, EcoVision streamlines waste sorting processes, contributing to a cleaner, greener planet.
 
@@ -38,6 +37,8 @@ Frontend:
 Navigate to the frontend directory:
 
 cd frontend
+
+# Timothy Liakh, Robert Acebedo, Nikul Patel, Matteo Rathgeber
 
 Install dependencies: npm install
 
