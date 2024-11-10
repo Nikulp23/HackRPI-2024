@@ -131,6 +131,30 @@ function App() {
       console.error('Error uploading image:', error);
     }
   };
+
+  const uploadVideo = async (file) => {
+    const formData = new FormData();
+    formData.append('video', file);
+  
+    try {
+      const response = await fetch('http://localhost:5000/api/upload-video', {
+        method: 'POST',
+        body: formData,
+      });
+      const videoUrl = URL.createObjectURL(file);
+      setVideoUrl(videoUrl);
+  
+      if (response.ok) {
+        const blob = await response.blob();
+        const videoUrl = URL.createObjectURL(blob);
+        setVideoUrl(videoUrl);
+      } else {
+        console.error('Failed to fetch image:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error uploading image:', error);
+    }
+  }
   
   
 
@@ -167,9 +191,10 @@ function App() {
   const handleVideoChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-        const videoUrl = URL.createObjectURL(file);
-        setVideoUrl(videoUrl);
-    }
+        // const videoUrl = URL.createObjectURL(file);
+        // setVideoUrl(videoUrl);
+        uploadVideo(file);    
+      }
   };
 
   const handleDiscardVideo = () => {
