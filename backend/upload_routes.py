@@ -1,10 +1,11 @@
-from flask import Blueprint, request, jsonify, send_file
+from flask import Blueprint, request, jsonify, make_response
 import os
 import numpy as np
 import cv2
 import requests
 from io import BytesIO
 import matplotlib.pyplot as plt
+import base64
 
 
 
@@ -43,7 +44,7 @@ def upload_image():
       'https://api.remove.bg/v1.0/removebg',
       files={'image_file': BytesIO(img_encoded.tobytes())},
       data={'size': 'auto'},
-      headers={'X-Api-Key': '6w8VGP3e7P1as9hySLpBrGP2'},  # Replace with your API key
+      headers={'X-Api-Key': '3RT6vfSn9htNVdFiDxidktNP'},  # Replace with your API key
    )
 
    if response.status_code == requests.codes.ok:
@@ -104,6 +105,7 @@ def upload_image():
    rectangle_color = (0, 255, 0)  # Green color for bounding box
    rectangle_thickness = 4
 
+   counter = 0
    for idx, cnt in enumerate(contours):
       area = cv2.contourArea(cnt)
       if area > 6000:  # Ignore small contours
@@ -111,16 +113,16 @@ def upload_image():
          cv2.rectangle(img_draw, (x, y), (x + w, y + h), rectangle_color, rectangle_thickness)
          
          # Store the bounding box in the desired format
-         croppedCoordinates[idx] = {"x": x, "y": y, "width": w, "height": h}
+         croppedCoordinates[counter] = {"x": x, "y": y, "width": w, "height": h}
+         counter += 1
 
    # Encode the resulting image to PNG for sending
    _, buffer = cv2.imencode('.png', img_draw)
-   response_image = BytesIO(buffer.tobytes())
+   base64_image = base64.b64encode(buffer).decode('utf-8')
 
-   # Return the image and coordinates as a response
    return jsonify({
       "croppedCoordinates": croppedCoordinates,
-      "image": "data:image/png;base64," + response_image.getvalue().decode('latin1')
+      "image": base64_image  # Image as base64 string
    }), 200
 
 def allowed_file(filename):
