@@ -29,8 +29,7 @@ Navigate to the backend directory:
 cd backend
 
 Start the Flask server and run 
-- python app.py
-
+python app.py
 
 Frontend:
 
@@ -38,8 +37,8 @@ Navigate to the frontend directory:
 
 cd frontend
 
-# Timothy Liakh, Robert Acebedo, Nikul Patel, Matteo Rathgeber
-
 Install dependencies: npm install
 
-- npm start
+and run npm start
+
+# Timothy Liakh, Robert Acebedo, Nikul Patel, Matteo Rathgeber
