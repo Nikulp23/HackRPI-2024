@@ -137,6 +137,7 @@ function App() {
 
   const handleFileUploadState = (data) => {
     setFileUploadState(data);
+    {data == 'imageUpload' ? setVideoUrl(null) : setImageUrl(null)}
   };
 
   // ---------- image helper functions ---------- //
@@ -245,7 +246,7 @@ function App() {
                   {videoUrl &&
                     <>
                       <div className="imageDisplayContainer">
-                        <video controls src={videoUrl} className="imageDisplay" style={{ maxWidth: '95%', maxHeight: '75%' }} />
+                        <video controls src={videoUrl} className="imageDisplay" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '95%', maxHeight: '75%', cursor: "auto" }} />
                         <div className="reuploadContainer">
                           <h4 className="clickToUpload">Click to re-upload</h4>
                         </div>
