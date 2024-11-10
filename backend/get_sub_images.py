@@ -1,9 +1,24 @@
 from flask import Blueprint, request, jsonify, send_file
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from PIL import Image
+import firebase_admin
+from firebase_admin import credentials, storage
+from io import BytesIO
 import os
 import uuid
 import json
+import requests 
 
+from dotenv import load_dotenv  
+
+load_dotenv()
+
+storage_bucket_name = os.getenv('FIREBASE_STORAGE_BUCKET')
+
+cred = credentials.Certificate("./service-account.json")
+firebase_admin.initialize_app(cred, {
+   'storageBucket': storage_bucket_name
+})
 
 get_sub_images = Blueprint('get_sub_images', __name__)
 
@@ -31,28 +46,68 @@ def getSubImages():
    except Exception as e:
       return jsonify({"error": f"Invalid coordinates format: {str(e)}"}), 400
 
-   image = Image.open(file)
-   cropped_images = []
+   original_image_bytes = file.read()
+   cropped_images_urls = []
 
 
-   # Process coordinates and crop images
-   for key, coord in coordinates.items():
-      x, y, width, height = coord['x'], coord['y'], coord['width'], coord['height']
-      cropped_image = image.crop((x, y, x + width, y + height))
-      # Temporarily storing into the subfolder to see what is saved
-      cropped_filename = os.path.join(SUB_UPLOAD_FOLDER, f'crop_{key}_{uuid.uuid4().hex}.png')
-      cropped_image.save(cropped_filename)
-      cropped_images.append(cropped_filename)
+   # Find sub images and upload synchronously 
+   with ThreadPoolExecutor() as executor:
+      futures = [
+         executor.submit(process_and_upload, original_image_bytes, coord, key)
+         for key, coord in coordinates.items()
+      ]
+      for future in futures:
+         cropped_images_urls.append(future.result())
 
-      #TO DO 
-      # 1. Call Firebase to convert each image into a link
-      # 2. Pass each link into the callChat endpoint
-      # 3. Return data to frontend
+   # TEMPORARY LIMIT OF PROCESSING ONLY 2 ITEMS TO SAVE GPT $
+   with ThreadPoolExecutor(max_workers=2) as executor:
+      api_futures = [
+         executor.submit(call_chat_output, image_url)
+         for image_url in cropped_images_urls
+      ]
 
-   return "success", 200
+      results = [future.result() for future in as_completed(api_futures)]
+
+   print(results)
+   return jsonify({"message": "success", "results": results}), 200
 
 
 
 def allowed_file(filename):
    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def upload_to_firebase(file_obj, filename):
+   bucket = storage.bucket()
+   blob = bucket.blob(filename)
+   
+   blob.upload_from_file(file_obj, content_type='image/png')
+   blob.make_public() 
+   
+   return blob.public_url
+
+def process_and_upload(original_image_bytes, coord, key):
+   # Reload image for each thread
+   image = Image.open(BytesIO(original_image_bytes))
+
+   x, y, width, height = coord['x'], coord['y'], coord['width'], coord['height']
+   cropped_image = image.crop((x, y, x + width, y + height))
+
+   in_memory_cropped_image = BytesIO()
+   cropped_image.save(in_memory_cropped_image, format='PNG')
+   in_memory_cropped_image.seek(0)
+
+   firebase_filename = f'cropped_images/{uuid.uuid4().hex}.png'
+   return upload_to_firebase(in_memory_cropped_image, firebase_filename)
+
+
+def call_chat_output(image_url):
+    """Calls the chatOutput API with the image URL."""
+    try:
+        response = requests.post('http://localhost:5000/chatOutput', json={"image_url": image_url})
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return {"error": f"Failed to get description for {image_url}"}
+    except Exception as e:
+        return {"error": f"Exception for {image_url}: {str(e)}"}
