@@ -104,7 +104,7 @@ def process_and_upload(original_image_bytes, coord, key):
 def call_chat_output(image_url):
     """Calls the chatOutput API with the image URL."""
     try:
-        response = requests.post('http://localhost:5000/chatOutput', json={"image_url": image_url})
+        response = requests.post('http://localhost:5000/api/chatOutput', json={"image_url": image_url})
         if response.status_code == 200:
             return response.json()
         else:

@@ -27,7 +27,7 @@ def get_image_description(image_url):
       "Item Name": "Put Name Here",
       "Use": "Recycle, reuse, salvage, useless",
       "Information on Use": "Details here",
-      "Educational Facts": "Facts here"
+      "Educational Facts": "Facts here",
     }
    
    Do not include unnecessary words, only use the format given. Do not use special characters for organization."""
@@ -56,15 +56,19 @@ def get_image_description(image_url):
    )
 
    response_content = response.choices[0].message.content
+   data = json.loads(response_content)
+   data["url"] = image_url
 
-   return json.loads(response_content)
+   return data
 
 @chatOutput.route('/chatOutput', methods=['POST'])
 def chat_output_route():
     image_url = request.json.get("image_url")
     json_response = get_image_description(image_url)
     return jsonify(json_response)
-   
+
+
+    
 
 
 
