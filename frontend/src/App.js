@@ -132,9 +132,13 @@ function App() {
         method: 'POST',
         body: formData,
       });
+      const videoUrl = URL.createObjectURL(file);
+      setVideoUrl(videoUrl);
   
       if (response.ok) {
         const data = await response.json();
+        // const videoUrl = URL.createObjectURL(file);
+        // setVideoUrl(videoUrl);
         console.log(data)
       } else {
         console.error('Failed to fetch image:', response.statusText);
@@ -179,9 +183,10 @@ function App() {
   const handleVideoChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-        const videoUrl = URL.createObjectURL(file);
-        setVideoUrl(videoUrl);
-        uploadVideo(file);    }
+        // const videoUrl = URL.createObjectURL(file);
+        // setVideoUrl(videoUrl);
+        uploadVideo(file);    
+      }
   };
 
   const handleDiscardVideo = () => {
