@@ -9,6 +9,10 @@
   font-family: 'Inter', sans-serif;
 }
 
+.title {
+  margin-bottom: 1em;
+}
+
 .content {
   width: 80%;
   position: relative;
@@ -121,6 +125,17 @@
 .clickToUpload {
   color: green;
   margin: 0.5em;
+}
+
+.ecoDiscvTitle {
+  display: flex;
+  align-items: center;
+}
+
+.ecoDiscvTitle img {
+  height: 1em;
+  width: auto;
+  margin-right: 8px;
 }
 
 .App-logo {
