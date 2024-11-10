@@ -216,7 +216,7 @@ function App() {
           <p><strong>GET Response:</strong> {getMessage}</p>
           <p><strong>POST Response:</strong> {postMessage}</p> */}
 
-          <h2 className="title">Eco-Friendly Recycling Buddy :))))</h2>
+          <h2 className="title">EcoVISION</h2>
         </div>
       </header>
 
@@ -346,7 +346,7 @@ function App() {
           </div>
         </div>
 
-        <p>© 2024 EcoLens</p>
+        <p style={{ 'display' : 'flex', 'alignSelf' : 'center' }}>© 2024 EcoVISION</p>
 
       </div>
 

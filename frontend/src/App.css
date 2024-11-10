@@ -16,8 +16,9 @@
 
 .content {
   width: 80%;
-  position: relative;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .card {
@@ -42,7 +43,7 @@
 }
 
 .cardHeader {
-  margin: 1em 0 0 0;
+  margin: 0;
 }
 
 .cardSubHeader {
@@ -96,6 +97,7 @@
   width: 100%;
   height: 90%;
   margin-top: 1em;
+  max-width: 450px;
 }
 
 .imageDisplay {

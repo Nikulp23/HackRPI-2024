@@ -13,7 +13,7 @@ function IdenfitiedItem({ facts, useInfo, name, use, url }) {
             <div className="cardContent">
 
                <div className={styles.itemHeaderWrapper}>
-               <img src={url} className={styles.croppedImg} alt="cropped image" />
+                  <img src={url} className={styles.croppedImg} alt="cropped image" />
                   <div className={styles.itemHeader}>
                      <div className={styles.itemTitle}>
                         <h3 className="cardHeader">{name}</h3>
