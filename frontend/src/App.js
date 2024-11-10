@@ -80,6 +80,7 @@ function App() {
       if (response.ok) {
         // const data = await response.json();
         // setData(data);
+        const data = await response.json();
         console.log('Cropped images data:', data);
       } else {
         console.error('Failed to fetch cropped images:', response.statusText);
