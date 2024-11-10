@@ -6,7 +6,12 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-family: 'Inter', sans-serif;
+  /* font-family: 'Inter', sans-serif; */
+  font-family: "Poppins", sans-serif;
+}
+
+.title {
+  margin-bottom: 1em;
 }
 
 .content {
@@ -121,6 +126,17 @@
 .clickToUpload {
   color: green;
   margin: 0.5em;
+}
+
+.ecoDiscvTitle {
+  display: flex;
+  align-items: center;
+}
+
+.ecoDiscvTitle img {
+  height: 1em;
+  width: auto;
+  margin-right: 8px;
 }
 
 .App-logo {

@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import styles from './../../styles/content/IdentifiedItem.module.css'
+import recycleImg from './../../images/recycle.png';
+import reuseImg from './../../images/reuse.png';
+import salvageImg from './../../images/firstaid.png'
+import uselessImg from './../../images/trash.png'
 
 function IdenfitiedItem({ facts, infoOnUse, name, use }) {
 
@@ -7,8 +11,11 @@ function IdenfitiedItem({ facts, infoOnUse, name, use }) {
       <>
          <div className={styles.subCard}>
             <div className="cardContent">
-               <h3 className="cardHeader">{name}</h3>
-               <p className="cardSubHeader">{use === "Recycle" ? "These should be recycled!" : "Don't recycle these."}</p>
+               <div className={styles.itemTitle}>
+                  <img src={use === "Recycle" ? recycleImg : use === "Reuse" ? reuseImg : use === "Salvage" ? salvageImg : uselessImg} alt="recycle" />
+                  <h3 className="cardHeader">{name}</h3>
+               </div>
+               <p className="cardSubHeader">{use === "Recycle" ? "These should be recycled!" : use === "Reuse" ? "You can reuse these!" : use === "Salvage" ? "You don't need to throw these away!" : "Don't recycle these."}</p>
 
                <div className={`${styles.howToDispose} ${styles.infoContainer}`}>
                   <div className={styles.info}>

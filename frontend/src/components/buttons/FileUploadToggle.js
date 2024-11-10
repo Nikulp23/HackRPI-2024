@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './../../styles/buttons/FileUploadToggle.module.css'
 
-function FileUploadToggle({ }) {
+function FileUploadToggle({ onData }) {
 
    const [activeButton, setActiveButton] = useState('imageUpload');
 
    const handleToggle = (button) => {
       setActiveButton(button);
    };
+
+   useEffect(() => {
+      onData(activeButton);
+   }, [activeButton, onData]);
 
    return (
       <>
