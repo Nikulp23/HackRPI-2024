@@ -4,6 +4,8 @@ import './App.css';
 import FileUploadToggle from './components/buttons/FileUploadToggle'
 import IdentifiedItem from './components/content/IdentifiedItem'
 import leafImg from './images/leaf.png';
+import cameraImg from './images/camera.png';
+import videoImg from './images/video.png';
 
 function App() {
   // State variables to store the response messages
@@ -131,6 +133,30 @@ function App() {
       console.error('Error uploading image:', error);
     }
   };
+
+  const uploadVideo = async (file) => {
+    const formData = new FormData();
+    formData.append('video', file);
+  
+    try {
+      const response = await fetch('http://localhost:5000/api/upload-video', {
+        method: 'POST',
+        body: formData,
+      });
+      const videoUrl = URL.createObjectURL(file);
+      setVideoUrl(videoUrl);
+  
+      if (response.ok) {
+        const blob = await response.blob();
+        const videoUrl = URL.createObjectURL(blob);
+        setVideoUrl(videoUrl);
+      } else {
+        console.error('Failed to fetch image:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error uploading image:', error);
+    }
+  }
   
   
 
@@ -167,9 +193,10 @@ function App() {
   const handleVideoChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-        const videoUrl = URL.createObjectURL(file);
-        setVideoUrl(videoUrl);
-    }
+        // const videoUrl = URL.createObjectURL(file);
+        // setVideoUrl(videoUrl);
+        uploadVideo(file);    
+      }
   };
 
   const handleDiscardVideo = () => {
@@ -189,7 +216,7 @@ function App() {
           <p><strong>GET Response:</strong> {getMessage}</p>
           <p><strong>POST Response:</strong> {postMessage}</p> */}
 
-          <h2 className="title">Eco-Friendly Recycling Buddy</h2>
+          <h2 className="title">Eco-Friendly Recycling Buddy :))))</h2>
         </div>
       </header>
 
@@ -203,11 +230,14 @@ function App() {
 
             {fileUploadState == 'imageUpload' &&
             <>
-              <h2 className="cardHeader">Upload an Image</h2>
+              <div className="ecoDiscvTitle">
+                <img src={cameraImg} alt="camera" />
+                <h2 className="cardHeader">Upload an Image</h2>
+              </div>
               <p className="cardText">Let's see what eco-treasures you've found!</p>
               <div className="uploadBoxContainer">
                 <div className="uploadBox" onClick={handleUploadBoxClick}>
-                  {!imageUrl && <h4 className="clickToUpload">Click to upload</h4> }
+                  {!imageUrl && <h4 className="clickToUpload">Click to Upload</h4> }
                   <input
                     type="file"
                     accept="image/*"
@@ -241,11 +271,14 @@ function App() {
 
             {fileUploadState == 'videoUpload' &&
             <>
-              <h2 className="cardHeader">Upload a Video</h2>
+              <div className="ecoDiscvTitle">
+                <img src={videoImg} alt="video" />
+                <h2 className="cardHeader">Upload a Video</h2>
+              </div>
               <p className="cardText">Let's see what eco-treasures you've found!</p>
               <div className="uploadBoxContainer">
                 <div className="uploadBox" onClick={handleUploadBoxClick}>
-                  {!videoUrl && <h4 className="clickToUpload">Click to upload</h4> }
+                  {!videoUrl && <h4 className="clickToUpload">Click to Upload</h4> }
                   <input
                     type="file"
                     accept="video/*"
@@ -285,7 +318,7 @@ function App() {
               <img src={leafImg} alt="leaf" />
               <h2 className="cardHeader">Eco-Discoveries</h2>
             </div>
-            <p className="cardSubHeader">Let's see what we can save from the landfill!</p>
+            <p className="cardText">Let's see what we can save from the landfill!</p>
 
 
             {data.map((item, index) => (
@@ -313,8 +346,7 @@ function App() {
           </div>
         </div>
 
-        <h2>Hi</h2>
-
+        <p>© 2024 EcoLens</p>
 
       </div>
 
