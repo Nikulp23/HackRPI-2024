@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, send_file
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from PIL import Image
 import firebase_admin
 from firebase_admin import credentials, storage
@@ -7,6 +7,7 @@ from io import BytesIO
 import os
 import uuid
 import json
+import requests 
 
 from dotenv import load_dotenv  
 
@@ -58,12 +59,17 @@ def getSubImages():
       for future in futures:
          cropped_images_urls.append(future.result())
 
-   print(cropped_images_urls)
-      #TO DO 
-      # 2. Pass each link into the callChat endpoint
-      # 3. Return data to frontend
+   # TEMPORARY LIMIT OF PROCESSING ONLY 2 ITEMS TO SAVE GPT $
+   with ThreadPoolExecutor(max_workers=2) as executor:
+      api_futures = [
+         executor.submit(call_chat_output, image_url)
+         for image_url in cropped_images_urls
+      ]
 
-   return "success", 200
+      results = [future.result() for future in as_completed(api_futures)]
+
+   print(results)
+   return jsonify({"message": "success", "results": results}), 200
 
 
 
@@ -93,3 +99,15 @@ def process_and_upload(original_image_bytes, coord, key):
 
    firebase_filename = f'cropped_images/{uuid.uuid4().hex}.png'
    return upload_to_firebase(in_memory_cropped_image, firebase_filename)
+
+
+def call_chat_output(image_url):
+    """Calls the chatOutput API with the image URL."""
+    try:
+        response = requests.post('http://localhost:5000/chatOutput', json={"image_url": image_url})
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return {"error": f"Failed to get description for {image_url}"}
+    except Exception as e:
+        return {"error": f"Exception for {image_url}: {str(e)}"}
