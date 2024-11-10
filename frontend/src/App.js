@@ -112,12 +112,11 @@ function App() {
         if (response.ok) {
           const blob = await response.blob();
           const url = URL.createObjectURL(blob);
-          // setImageUrl(url);
+          setImageUrl(url);
 
           // COORDINATES CURRENTLY HARD CODED - Later to be returned from prev API call
           const coordinates = {0: {'x': 344, 'y': 263, 'width': 167, 'height': 155}, 1: {'x': 91, 'y': 307, 'width': 108, 'height': 93}, 2: {'x': 81, 'y': 225, 'width': 146, 'height': 54}, 3: {'x': 353, 'y': 48, 'width': 192, 'height': 217}, 4: {'x': 197, 'y': 96, 'width': 154, 'height': 155}, 5: {'x': 69, 'y': 104, 'width': 86, 'height': 115}, 6: {'x': 127, 'y': 16, 'width': 85, 'height': 111}}
           await getCroppedData(blob, coordinates);
-          setImageUrl(url);
         } else {
           console.error('Failed to fetch image:', response.statusText);
         }
