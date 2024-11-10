@@ -2,6 +2,9 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import requests
+import os
+import uuid
+from PIL import Image
 
 imgUrl = "image1.jpg"
 
@@ -114,17 +117,13 @@ def DOES_SOME_SHIT(OriginalimgUrl):
     # Apply NMS to the bounding boxes
     nms_boxes = non_max_suppression(boxes, overlap_thresh=0.3)
 
-    # Save bounding boxes in a dictionary
-    bounding_boxes = {}
-    for i, (x, y, w, h) in enumerate(nms_boxes):
-        bounding_boxes[i] = {"x": x, "y": y, "width": w, "height": h}
-        # Draw each bounding box on the original image
-        cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
+    bounding_boxes = []
 
     # Draw the resulting bounding boxes
     rectangle_color = (0, 255, 0)  # Green color for bounding box
     for (x, y, w, h) in nms_boxes:
         cv2.rectangle(img_draw, (x, y), (x + w, y + h), rectangle_color, 2)
+        bounding_boxes.append({"x": x, "y": y, "width": w, "height": h})
 
     # Save and display the final image
     output_path = 'output_image_with_red_background.png'
@@ -137,6 +136,34 @@ def DOES_SOME_SHIT(OriginalimgUrl):
     plt.title('Objects with Bounding Boxes on Red Background')
     plt.show()
 
-    return img_display, bounding_boxes
+    return bounding_boxes
 
-print(DOES_SOME_SHIT(imgUrl))
+
+def crop_images(file, coordinates, output_folder="cropped_images"):
+    # Open the image file
+    image = Image.open(file)
+    cropped_images = []
+
+    # Create output folder if it doesn't exist
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+
+    # Process coordinates and crop images
+    for i in range(len(coordinates)):
+        x, y = coordinates[i]['x'], coordinates[i]['y']
+        width, height = coordinates[i]['width'], coordinates[i]['height']
+        
+        # Correctly calculate the bottom-right coordinates
+        cropped_image = image.crop((x, y, x + width, y + height))
+        
+        # Generate unique filename and save the cropped image
+        cropped_filename = os.path.join(output_folder, f'crop_{i}_{uuid.uuid4().hex}.png')
+        cropped_image.save(cropped_filename)
+        cropped_images.append(cropped_filename)
+    
+    return cropped_images
+
+bounding_boxes = (DOES_SOME_SHIT(imgUrl))
+
+# Call the function with the path to the image
+crop_images("./image1.jpg", bounding_boxes)
