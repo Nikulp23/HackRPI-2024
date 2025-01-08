@@ -1,4 +1,5 @@
 # EcoVision HackRPI-2024
+### Best AI Hack Winner
 
 EcoVision is a sustainability-focused tool designed to help individuals and waste management facilities make eco-friendly choices by identifying recyclable, reusable, or salvageable items. By leveraging computer vision and machine learning, EcoVision streamlines waste sorting processes, contributing to a cleaner, greener planet.
 
@@ -20,25 +21,29 @@ Machine Learning: OpenAI API for categorization
 
 Source Code: https://github.com/Nikulp23/HackRPI-2024
 
-Instructions to Run:
+Dev Post: https://devpost.com/software/recircle-ot57su
 
-Backend:
+Demo: https://youtu.be/yKVOGGXWBcE
+
+# Instructions to Run:
+
+### Backend:
 
 Navigate to the backend directory:
 
-cd backend
+`cd backend`
 
 Start the Flask server and run 
-python app.py
+`python app.py`
 
-Frontend:
+### Frontend:
 
 Navigate to the frontend directory:
 
-cd frontend
+`cd frontend`
 
-Install dependencies: npm install
+Install dependencies: `npm install`
 
-and run npm start
+and run `npm start`
 
-# Timothy Liakh, Robert Acebedo, Nikul Patel, Matteo Rathgeber
+## Developed by: Timothy Liakh, Robert Acebedo, Nikul Patel, Matteo Rathgeber
